@@ -20,19 +20,30 @@ public class ProductService {
         this.productRepository = productRepository;
     }
 
-    @Cacheable(value = "products", key = "#root.methodName")
-    public List<Product> getAllProducts() {
+    @Cacheable(cacheNames = "products", key = "#root.methodName")
+    public List<Product> getAllProducts() throws InterruptedException {
         return productRepository.findAll();
     }
 
-    @Cacheable(value = "products", key = "#id")
+    @Cacheable(cacheNames = "products", key = "#id")
     public Product getProductById(Long id) {
         Optional<Product> optionalProduct = productRepository.findById(id);
         return optionalProduct.orElse(null);
     }
 
-    @CachePut(value = "products", key = "#product.id")
+    @CachePut(cacheNames = "products", key = "#product.id")
     public void createProduct(Product product) {
         productRepository.save(product);
+    }
+
+    @Cacheable(cacheNames = "mySpecialCache")
+    public String longRunnigMethod() throws InterruptedException {
+        Thread.sleep(5000L);
+        return "method calisti";
+    }
+
+    @CacheEvict(cacheNames = "mySpecialCache")
+    public void clearCache(){
+        System.out.println("cache temizledi");
     }
 }

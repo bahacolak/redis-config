@@ -14,12 +14,15 @@ public class ProductController {
 
     private final ProductService productService;
 
+    private int sayac = 0;
+
+
     public ProductController(ProductService productService) {
         this.productService = productService;
     }
 
     @GetMapping
-    public List<Product> getAllProducts() {
+    public List<Product> getAllProducts() throws InterruptedException {
         return productService.getAllProducts();
     }
 
@@ -37,5 +40,15 @@ public class ProductController {
     public ResponseEntity<Void> createProduct(@RequestBody Product product) {
         productService.createProduct(product);
         return ResponseEntity.status(HttpStatus.CREATED).build();
+    }
+
+    @GetMapping("/control")
+    public String cacheControl() throws InterruptedException {
+        if (sayac == 5){
+            productService.clearCache();
+            sayac = 0;
+        }
+        sayac++;
+        return productService.longRunnigMethod();
     }
 }
