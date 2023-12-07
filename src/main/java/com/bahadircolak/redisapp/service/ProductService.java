@@ -2,7 +2,6 @@ package com.bahadircolak.redisapp.service;
 
 import com.bahadircolak.redisapp.model.Product;
 import com.bahadircolak.redisapp.repository.ProductRepository;
-import jakarta.transaction.Transactional;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -22,6 +21,7 @@ public class ProductService {
 
     @Cacheable(cacheNames = "products", key = "#root.methodName")
     public List<Product> getAllProducts() throws InterruptedException {
+        Thread.sleep(5000L);
         return productRepository.findAll();
     }
 
