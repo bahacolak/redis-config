@@ -20,8 +20,7 @@ public class ProductService {
     }
 
     @Cacheable(cacheNames = "products", key = "#root.methodName")
-    public List<Product> getAllProducts() throws InterruptedException {
-        Thread.sleep(5000L);
+    public List<Product> getAllProducts() {
         return productRepository.findAll();
     }
 
